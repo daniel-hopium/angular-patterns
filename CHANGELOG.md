@@ -12,6 +12,11 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 ## Unveröffentlicht
 
 ### Neu
+- Kapitel RxJS & HTTP (8 Lektionen) mit Marble-Diagrammen: die vier Flattening-Operatoren im
+  Vergleich, Typeahead, Abmelden, Interop mit Signals, Fehlerbehandlung, `shareReplay`,
+  Interceptors und Subjects. Dazu Forms (7 Lektionen): Typed Forms, Validatoren, `FormArray`,
+  Fehler zur richtigen Zeit anzeigen, `ControlValueAccessor`, Template-driven vs. Reactive und
+  Signal Forms, die seit Angular 22 stabil sind.
 - Angular-Patterns als eigene App: 40 Lektionen zu modernem Angular (Stand Angular 22) in
   sechs Kapiteln – Signals, Komponenten, Templates & Control Flow, Dependency Injection,
   Router sowie Performance & Architektur.

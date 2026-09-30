@@ -1,6 +1,6 @@
 # Angular-Patterns – modernes Angular zum Anfassen
 
-Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
+55 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
 Dependency Injection, RxJS, Forms, Router und Performance. Jedes Muster hat eine Kernregel,
 eine Live-Simulation, „So nicht – so“-Code und Links auf die genaue Stelle der Angular-Doku.
 Auf Deutsch und Englisch.
@@ -21,7 +21,7 @@ Abhängigkeiten. Internet braucht es nur für die Google-Schriften.
 | Templates & Control Flow | `@if`, `@for` mit `track`, `@switch`, `@let`, `@defer`, Pipes, Class- und Style-Bindings |
 | Dependency Injection | `inject()`, `providedIn`/`@Service()`, `InjectionToken`, Component-Provider, Resolution Modifiers, `provideX()` |
 | RxJS & HTTP | Flattening-Operatoren, Typeahead, Abmelden, Interop mit Signals, Fehlerbehandlung, `shareReplay`, Interceptors |
-| Forms | Typed Forms, Validatoren, `FormArray`, Fehler anzeigen und mehr |
+| Forms | Typed Forms, Validatoren, `FormArray`, Fehler anzeigen, `ControlValueAccessor`, Template-driven vs. Reactive, Signal Forms |
 | Router | Routen, Inputs aus der Route, Lazy Loading, Guards, Resolver, Links, Titel |
 | Performance & Architektur | OnPush, Zoneless, Container/Presentational, State-Service, Hydration, `NgOptimizedImage` |
 

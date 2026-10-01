@@ -12,6 +12,11 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 ## Unveröffentlicht
 
 ### Neu
+- Lektion „Zurück in die URL schreiben“: Query- und Pfad-Parameter mit `router.navigate()`
+  ändern – `queryParamsHandling: 'merge'`, `null` zum Entfernen, `replaceUrl` beim Tippen –,
+  mit einer Simulation samt Browser-Verlauf, Zurück-Button und Neuladen.
+- Syntax-Highlighting im Stil von VS Code „Dark+“ für alle Code-Beispiele, inklusive
+  Angular-Templates mit Bindings, `@if`/`@for` und `{{ }}`.
 - Kapitel RxJS & HTTP (8 Lektionen) mit Marble-Diagrammen: die vier Flattening-Operatoren im
   Vergleich, Typeahead, Abmelden, Interop mit Signals, Fehlerbehandlung, `shareReplay`,
   Interceptors und Subjects. Dazu Forms (7 Lektionen): Typed Forms, Validatoren, `FormArray`,

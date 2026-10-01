@@ -1,6 +1,6 @@
 # Angular-Patterns – modernes Angular zum Anfassen
 
-55 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
+56 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
 Dependency Injection, RxJS, Forms, Router und Performance. Jedes Muster hat eine Kernregel,
 eine Live-Simulation, „So nicht – so“-Code und Links auf die genaue Stelle der Angular-Doku.
 Auf Deutsch und Englisch.
@@ -22,11 +22,13 @@ Abhängigkeiten. Internet braucht es nur für die Google-Schriften.
 | Dependency Injection | `inject()`, `providedIn`/`@Service()`, `InjectionToken`, Component-Provider, Resolution Modifiers, `provideX()` |
 | RxJS & HTTP | Flattening-Operatoren, Typeahead, Abmelden, Interop mit Signals, Fehlerbehandlung, `shareReplay`, Interceptors |
 | Forms | Typed Forms, Validatoren, `FormArray`, Fehler anzeigen, `ControlValueAccessor`, Template-driven vs. Reactive, Signal Forms |
-| Router | Routen, Inputs aus der Route, Lazy Loading, Guards, Resolver, Links, Titel |
+| Router | Routen, Inputs aus der Route, zurück in die URL schreiben, Lazy Loading, Guards, Resolver, Links, Titel |
 | Performance & Architektur | OnPush, Zoneless, Container/Presentational, State-Service, Hydration, `NgOptimizedImage` |
 
 Jede Lektion ist gleich aufgebaut: Version und Status, Kernregel, „Auf einen Blick“ (APIs),
-Live-Simulation, „So nicht – so“, Richtig/Falsch, „Warum?“ und oft „So testest du es“.
+Live-Simulation, „So nicht – so“, Richtig/Falsch, „Warum?“ und oft „So testest du es“. Die
+Code-Beispiele sind im Stil von VS Code „Dark+“ eingefärbt – ein kleiner eigener Tokenizer
+für TypeScript und Angular-Templates, keine Bibliothek.
 
 ## Die Simulationen
 

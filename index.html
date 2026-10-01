@@ -322,6 +322,21 @@ a.logo:hover{background:var(--surface-2)}
 .sim-node.flash{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
 @media (prefers-reduced-motion:no-preference){.sim-node{transition:background .3s,border-color .3s,color .3s}}
 .lesson h1,.lesson h2,.item-title{overflow-wrap:break-word}
+/* Code im Stil von VS Code „Dark+“ – in hellem und dunklem Modus gleich, wie im Editor */
+.k-pre.k-hl{background:#1E1E1E;color:#D4D4D4;color-scheme:dark}
+.k-pre.k-hl::selection,.k-pre.k-hl ::selection{background:#264F78}
+.k-pre.k-hl:focus-visible{outline-offset:-3px}
+.hl-kw,.hl-tag{color:#569CD6}
+.hl-ctl{color:#C586C0}
+.hl-str{color:#CE9178}
+.hl-num{color:#B5CEA8}
+.hl-com{color:#6A9955}
+.hl-fn{color:#DCDCAA}
+.hl-type{color:#4EC9B0}
+.hl-var,.hl-prop,.hl-attr{color:#9CDCFE}
+.hl-pun{color:#8C8C8C}
+.hl-op{color:#D4D4D4}
+.k-pre.k-hl{font-variant-ligatures:none}
 </style>
 </head>
 <body>
@@ -5057,8 +5072,8 @@ export class ProductDetail {
     () => this.tab() ?? 'details');
 }`,
     note:tx('Inputs sind Signals, also rechnen <code>computed()</code> und Templates automatisch neu. Einen Standard setzt du per <code>??</code> in einem <code>computed()</code> oder per <code>transform</code> – nicht als Input-Default, den überschreibt der Router mit <code>undefined</code>.','Inputs are signals, so <code>computed()</code> and templates update automatically. Set a default with <code>??</code> in a <code>computed()</code> or with a <code>transform</code> – not as the input default, the router overwrites that with <code>undefined</code>.')},
-  do:tx(['<code>withComponentInputBinding()</code> in <code>provideRouter()</code> einschalten und Parameter als <code>input()</code> lesen.','Den Input-Typ ehrlich schreiben: <code>input&lt;string | undefined&gt;()</code> für alles, was fehlen kann.','Abhängige Daten mit <code>computed()</code> oder einer <code>resource</code> aus dem Input ableiten – dann lädt der Parameterwechsel automatisch neu.','Mit <code>queryParams: false</code> arbeiten, wenn Query-Parameter nicht zufällig Inputs gleichen Namens überschreiben sollen.'],
-        ['Turn on <code>withComponentInputBinding()</code> in <code>provideRouter()</code> and read parameters as <code>input()</code>.','Write the input type honestly: <code>input&lt;string | undefined&gt;()</code> for everything that can be missing.','Derive dependent data from the input with <code>computed()</code> or a <code>resource</code> – then a parameter change reloads automatically.','Use <code>queryParams: false</code> if query params shouldn’t accidentally overwrite inputs of the same name.']),
+  do:tx(['<code>withComponentInputBinding()</code> in <code>provideRouter()</code> einschalten und Parameter als <code>input()</code> lesen.','Zum Ändern nicht den Input setzen, sondern zurück in die URL schreiben – mit <code>router.navigate()</code>, siehe <a href="#query-write">Zurück in die URL schreiben</a>.','Den Input-Typ ehrlich schreiben: <code>input&lt;string | undefined&gt;()</code> für alles, was fehlen kann.','Abhängige Daten mit <code>computed()</code> oder einer <code>resource</code> aus dem Input ableiten – dann lädt der Parameterwechsel automatisch neu.','Mit <code>queryParams: false</code> arbeiten, wenn Query-Parameter nicht zufällig Inputs gleichen Namens überschreiben sollen.'],
+        ['Turn on <code>withComponentInputBinding()</code> in <code>provideRouter()</code> and read parameters as <code>input()</code>.','To change a value, don’t set the input – write back to the URL with <code>router.navigate()</code>, see <a href="#query-write">Writing back to the URL</a>.','Write the input type honestly: <code>input&lt;string | undefined&gt;()</code> for everything that can be missing.','Derive dependent data from the input with <code>computed()</code> or a <code>resource</code> – then a parameter change reloads automatically.','Use <code>queryParams: false</code> if query params shouldn’t accidentally overwrite inputs of the same name.']),
   dont:tx(['Nicht <code>route.snapshot</code> im Konstruktor lesen, wenn sich der Parameter bei gleicher Komponente ändern kann.','Keinen Input-Default wie <code>input(\'details\')</code> erwarten – ohne passenden Schlüssel setzt der Router <code>undefined</code>.','Nicht erwarten, dass das in Kind-Komponenten wirkt – gebunden wird nur die Komponente der Route.'],
         ['Don’t read <code>route.snapshot</code> in the constructor if the parameter can change while the component stays.','Don’t rely on an input default like <code>input(\'details\')</code> – without a matching key the router sets <code>undefined</code>.','Don’t expect this to work in child components – only the route’s component gets bound.']),
   why:tx('<p>Navigierst du innerhalb derselben Route (<code>/products/42</code> → <code>/products/7</code>), zerstört Angular die Komponente nicht, sondern verwendet sie wieder. Alles, was du einmalig im Konstruktor aus dem Snapshot liest, bleibt dann stehen. Mit dem Input-Binding setzt der Router nach jeder Navigation die Inputs neu – und weil <code>input()</code> ein Signal ist, reagiert alles, was davon abhängt.</p><p>Die Reihenfolge ist fest: Query-Parameter, dann Pfad- und Matrix-Parameter, dann <code>data</code> und Resolver; spätere Quellen überschreiben frühere. Ein Input ohne Treffer wird <code>undefined</code>, damit kein Wert von der vorigen URL übrig bleibt – darum gehört ein Standardwert in ein <code>computed()</code> oder ein <code>transform</code>.</p>',
@@ -5283,6 +5298,162 @@ LESSONS.push({
   const link = nav.nativeElement.querySelector('a[href="/products"]');
   expect(link.getAttribute('aria-current')).toBe('page');
 });`,note:tx('Teste das Ergebnis im DOM – Klasse und <code>aria-current</code> –, nicht die Direktive selbst.','Test the result in the DOM – class and <code>aria-current</code> – not the directive itself.')}
+});
+
+LESSONS.push({
+  id:'query-write', cat:'router', order:25,
+  title:tx('Zurück in die URL schreiben: Query- und Pfad-Parameter ändern','Writing back to the URL: changing query and path params'),
+  short:tx('Inputs lesen die URL, router.navigate() schreibt sie – so bleiben Zurück-Button, Neuladen und geteilte Links richtig.','Inputs read the URL, router.navigate() writes it – so the back button, reloads and shared links stay right.'),
+  keys:'queryParams queryParamsHandling merge navigate relativeTo replaceUrl url state filter sort page pagination suche search routerLink zurück back query parameter schreiben write',
+  status:'stable',
+  refs:[[tx('Angular-Doku: Query-Parameter lesen und setzen','Angular docs: Reading and setting query params'),'https://angular.dev/guide/routing/read-route-state#query-parameters'],
+        [tx('API: NavigationBehaviorOptions (replaceUrl)','API: NavigationBehaviorOptions (replaceUrl)'),'https://angular.dev/api/router/NavigationBehaviorOptions#replaceUrl'],
+        [tx('API: UrlCreationOptions (queryParamsHandling)','API: UrlCreationOptions (queryParamsHandling)'),'https://angular.dev/api/router/UrlCreationOptions#queryParamsHandling']],
+  rule:tx('Inputs aus <code>withComponentInputBinding()</code> sind <strong>nur lesbar</strong>. Ändert sich ein Filter, eine Seite oder die Sortierung, schreibst du sie mit <code>router.navigate([], { queryParams, queryParamsHandling: \'merge\' })</code> zurück in die URL – der Router setzt die Inputs dann selbst neu. Die URL bleibt die einzige Quelle des Zustands.',
+          'Inputs from <code>withComponentInputBinding()</code> are <strong>read-only</strong>. When a filter, page or sort order changes, write it back to the URL with <code>router.navigate([], { queryParams, queryParamsHandling: \'merge\' })</code> – the router then updates the inputs itself. The URL stays the single source of the state.'),
+  apis:[['router.navigate([], …)','navigate(commands, { relativeTo?, queryParams?, queryParamsHandling?, replaceUrl? })',tx('Leere Commands = gleiche Route, nur die Query ändert sich.','Empty commands = same route, only the query changes.')],
+        ['queryParamsHandling','\'merge\' | \'preserve\' | \'replace\' | \'\'',tx('<code>merge</code> behält die übrigen Parameter, <code>replace</code> (Standard) ersetzt alle.','<code>merge</code> keeps the other params, <code>replace</code> (default) replaces all of them.')],
+        ['queryParams: { x: null }','',tx('<code>null</code> oder <code>undefined</code> entfernt den Parameter aus der URL.','<code>null</code> or <code>undefined</code> removes the param from the URL.')],
+        ['replaceUrl','boolean',tx('Ersetzt den aktuellen History-Eintrag statt einen neuen anzulegen – für Tippen in einem Suchfeld.','Replaces the current history entry instead of adding one – for typing into a search box.')],
+        ['[routerLink]="[]" [queryParams]','queryParamsHandling="merge"',tx('Dasselbe im Template, wenn es ein echter Link sein soll (Seite 2, Sortierung).','The same in the template when it should be a real link (page 2, sort order).')]],
+  demo:`<div class="sim-grid query-write-top">
+  <div class="sim-card"><h3>${tx('Optionen beim Schreiben','Options when writing')}</h3>
+    <label class="check-row"><input type="checkbox" id="query-write-merge" checked> <span><code>queryParamsHandling: 'merge'</code></span></label>
+    <label class="check-row"><input type="checkbox" id="query-write-replace" checked> <span><code>replaceUrl: true</code> ${tx('beim Tippen','while typing')}</span></label>
+    <h3 class="query-write-h">${tx('Browser-Verlauf','Browser history')}</h3>
+    <ol class="sim-log query-write-hist" id="query-write-hist" aria-label="${tx('Verlauf','History')}"></ol>
+    <div class="sim-row"><button type="button" class="btn btn-secondary" id="query-write-back">${ic('back')} ${tx('Zurück','Back')}</button><button type="button" class="btn btn-ghost" id="query-write-reload">${ic('refresh')} ${tx('Neu laden','Reload')}</button></div>
+  </div>
+  <div class="sim-card"><h3>&lt;product-list&gt;</h3>
+    ${NGRT.chrome('query-write')}
+  </div>
+</div>
+<div class="sim-card"><h3>${tx('Was die Komponente tut','What the component does')}</h3><ul class="sim-log" id="query-write-log" aria-label="${tx('Protokoll','Log')}"></ul></div>
+<p class="demo-note">${tx('Probier: Tipp einen Suchbegriff, sortier um und blättere weiter – die URL wächst mit, die Inputs kommen aus ihr zurück. Nimm <code>merge</code> weg und blättere: Suche und Sortierung sind weg. Nimm <code>replaceUrl</code> weg und tipp ein Wort: Jeder Buchstabe landet im Verlauf. „Zurück“ und „Neu laden“ funktionieren ohne eine Zeile Extra-Code, weil der Zustand nur in der URL steht.','Try: type a search term, change the sort order and page on – the URL grows with it, and the inputs come back from it. Untick <code>merge</code> and page on: search and sort are gone. Untick <code>replaceUrl</code> and type a word: every letter lands in the history. “Back” and “Reload” work without a single extra line, because the state lives only in the URL.')}</p>`,
+  init(root){
+    const {log,flash}=NG,R=NGRT;
+    const ul=$('#query-write-log',root),hist=$('#query-write-hist',root),url=$('#query-write-url',root),view=$('#query-write-view',root);
+    const ITEMS=['Espresso','Filter','Mühle','Kanne','Tasse','Filterpapier','Waage','Dose','Bohnen','Milchkännchen','Siebträger','Tamper'].map((n,i)=>({n:tx(n,['Espresso','Filter','Grinder','Pot','Cup','Filter paper','Scale','Tin','Beans','Milk jug','Portafilter','Tamper'][i]),p:[9,7,49,29,12,4,24,8,14,11,59,19][i]}));
+    const PER=4;
+    let stack=['/products'],pos=0,typing=0;
+    $('#query-write-tab',root).textContent=tx('Produkte','Products');
+    /* „Router“: liest die URL und setzt die Inputs – wie withComponentInputBinding() */
+    const inputsFrom=u=>{const {query}=R.parse(u);return {q:query.q,sort:query.sort,page:query.page}};
+    function render(fromNav){
+      const u=stack[pos],inp=inputsFrom(u);url.value=u;
+      const q=inp.q??'',sort=inp.sort??'name',page=Number(inp.page??1);
+      let list=ITEMS.filter(x=>x.n.toLowerCase().includes(q.toLowerCase()));
+      list=[...list].sort(sort==='price'?(a,b)=>a.p-b.p:(a,b)=>a.n.localeCompare(b.n,LOCALE));
+      const pages=Math.max(1,Math.ceil(list.length/PER)),pg=Math.min(Math.max(page,1),pages);
+      const active=document.activeElement?.id;
+      view.innerHTML=`<div class="query-write-page">
+        <div class="query-write-ctl"><div class="field"><label for="query-write-q">${tx('Suche','Search')}</label><input class="input" id="query-write-q" type="search" autocomplete="off" value="${esc(q)}"></div>
+        <div class="field"><label for="query-write-sort">${tx('Sortierung','Sort')}</label><select class="input" id="query-write-sort"><option value="name"${sort==='name'?' selected':''}>Name</option><option value="price"${sort==='price'?' selected':''}>${tx('Preis','Price')}</option></select></div></div>
+        <ul class="query-write-list">${list.slice((pg-1)*PER,pg*PER).map(x=>`<li><span>${esc(x.n)}</span><span>${x.p} €</span></li>`).join('')||`<li>${tx('Keine Treffer','No results')}</li>`}</ul>
+        <div class="sim-row query-write-pager"><button type="button" class="btn btn-secondary" id="query-write-prev"${pg<=1?' aria-disabled="true"':''}>${tx('← Zurück','← Prev')}</button><span>${tx(`Seite ${pg} von ${pages}`,`Page ${pg} of ${pages}`)}</span><button type="button" class="btn btn-secondary" id="query-write-next"${pg>=pages?' aria-disabled="true"':''}>${tx('Weiter →','Next →')}</button></div>
+        <p class="hint query-write-inputs">input(): q=${inp.q===undefined?'undefined':`'${esc(inp.q)}'`} · sort=${inp.sort===undefined?'undefined':`'${esc(inp.sort)}'`} · page=${inp.page===undefined?'undefined':`'${esc(inp.page)}'`}</p></div>`;
+      if(active&&$('#'+active,view)){const el=$('#'+active,view);el.focus();if(el.type==='search')el.setSelectionRange(el.value.length,el.value.length)}
+      hist.innerHTML=stack.map((s,i)=>`<li${i===pos?' class="hl" aria-current="true"':''}>${esc(s)}</li>`).join('');
+      hist.scrollTop=hist.scrollHeight;
+      if(fromNav)flash(view);
+    }
+    /* router.navigate([], { queryParams, queryParamsHandling, replaceUrl }) */
+    function navigate(params,replace){
+      const merge=$('#query-write-merge',root).checked,{query}=R.parse(stack[pos]);
+      const next=merge?{...query}:{};
+      Object.entries(params).forEach(([k,v])=>{if(v==null)delete next[k];else next[k]=String(v)});
+      const qs=new URLSearchParams(next).toString(),u='/products'+(qs?'?'+qs:'');
+      log(ul,`<span class="t">navigate</span> queryParams ${esc(JSON.stringify(params))}${merge?" · 'merge'":''}${replace?' · replaceUrl':''} → <span class="hl">${esc(u)}</span>`);
+      if(u===stack[pos])return;
+      if(replace)stack[pos]=u;else{stack=stack.slice(0,pos+1);stack.push(u);pos++}
+      render(true);
+    }
+    view.addEventListener('input',e=>{
+      if(e.target.id!=='query-write-q')return;
+      clearTimeout(typing);const v=e.target.value;
+      typing=setTimeout(()=>navigate({q:v||null,page:null},$('#query-write-replace',root).checked),250);
+    });
+    view.addEventListener('change',e=>{if(e.target.id==='query-write-sort')navigate({sort:e.target.value,page:null})});
+    view.addEventListener('click',e=>{
+      const b=e.target.closest('button');if(!b||b.getAttribute('aria-disabled')==='true')return;
+      const page=Number(inputsFrom(stack[pos]).page??1);
+      if(b.id==='query-write-next')navigate({page:page+1});
+      if(b.id==='query-write-prev')navigate({page:page-1>1?page-1:null});
+    });
+    root.addEventListener('click',e=>{
+      if(e.target.closest('#query-write-back')&&pos>0){pos--;log(ul,`<span class="t">${tx('Zurück-Button','back button')}</span> → ${esc(stack[pos])} – ${tx('Router setzt die Inputs neu','router sets the inputs again')}`);render(true)}
+      if(e.target.closest('#query-write-reload')){log(ul,`<span class="t">${tx('Neu laden','reload')}</span> ${esc(stack[pos])} – ${tx('Zustand kommt aus der URL zurück','state comes back from the URL')}`);render(true)}
+    });
+    $('#query-write-bar',root).addEventListener('submit',e=>{e.preventDefault();let u=url.value.trim();if(!u.startsWith('/products'))u='/products';stack=stack.slice(0,pos+1);stack.push(u);pos++;render(true)});
+    render(false);
+    return ()=>clearTimeout(typing);
+  },
+  css:`.query-write-top{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.query-write-h{margin-top:14px}.query-write-hist{max-height:150px;padding-left:28px;list-style:decimal;margin-bottom:10px}
+.query-write-page{padding:12px}.query-write-ctl{display:flex;flex-wrap:wrap;gap:10px}.query-write-ctl .field{flex:1 1 130px;margin:0}
+.query-write-list{list-style:none;margin:12px 0;padding:0;display:grid;gap:4px}.query-write-list li{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;border:1px solid var(--line);border-radius:var(--radius-sm)}
+.query-write-pager{justify-content:space-between}.query-write-pager [aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+.query-write-inputs{font-family:var(--font-mono);font-size:.75rem;overflow-wrap:anywhere;margin:10px 0 0}`,
+  bad:{code:`export class ProductList {
+  page = input(1, { transform: Number });
+
+  // copies the input – the URL never learns about it
+  current = signal(1);
+  next() {
+    this.current.update(p => p + 1);
+    // this.page.set(…) – doesn't exist,
+    // InputSignal is read-only
+  }
+}`,
+    note:tx('Der Zustand lebt nur in der Komponente: Neu laden setzt auf Seite 1 zurück, ein geteilter Link zeigt etwas anderes, der Zurück-Button springt aus der Liste heraus. Und Input und Kopie laufen auseinander, sobald jemand die URL ändert.','The state lives only in the component: reloading resets to page 1, a shared link shows something else, the back button jumps out of the list. And input and copy drift apart as soon as someone changes the URL.')},
+  good:{code:`export class ProductList {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  q = input<string>();                  // ?q=
+  sort = input<string>();               // ?sort=
+  page = input(1, {                     // ?page=
+    transform: (v: string | undefined) => Number(v ?? 1),
+  });
+
+  private setQuery(queryParams: Params, replaceUrl = false) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+      replaceUrl,
+    });
+  }
+
+  next() { this.setQuery({ page: this.page() + 1 }); }
+  sortBy(sort: string) { this.setQuery({ sort, page: null }); }
+  search(q: string) { this.setQuery({ q: q || null, page: null }, true); }
+
+  // path param instead: /products/7 → /products/8
+  show(id: string) {
+    this.router.navigate(['..', id], { relativeTo: this.route });
+  }
+}`,
+    note:tx('Lesen über Inputs, schreiben über die URL: Ein Datenfluss in eine Richtung. <code>null</code> entfernt einen Parameter (Seite 1 braucht kein <code>?page=1</code>), <code>merge</code> lässt die anderen stehen, <code>replaceUrl</code> hält den Verlauf beim Tippen sauber. Für echte Links im Template geht dasselbe mit <code>&lt;a [routerLink]="[]" [queryParams]="{ page: page() + 1 }" queryParamsHandling="merge"&gt;</code>.','Read through inputs, write through the URL: one data flow in one direction. <code>null</code> removes a param (page 1 needs no <code>?page=1</code>), <code>merge</code> keeps the others, <code>replaceUrl</code> keeps the history clean while typing. For real links in the template the same works with <code>&lt;a [routerLink]="[]" [queryParams]="{ page: page() + 1 }" queryParamsHandling="merge"&gt;</code>.')},
+  do:tx(['Zustand, der teilbar sein soll (Suche, Filter, Sortierung, Seite, aktiver Tab), in die URL legen und per <code>input()</code> lesen.','Mit <code>queryParamsHandling: \'merge\'</code> nur ändern, was sich ändert – und mit <code>null</code> entfernen, was dem Standard entspricht.','Beim Tippen <code>replaceUrl: true</code> setzen und entprellen (<code>debounce</code> oder ein Timer), sonst landet jeder Buchstabe im Verlauf.','Für Blättern und Sortieren echte Links mit <code>[queryParams]</code> nehmen – dann gehen „In neuem Tab öffnen“ und Mittelklick.'],
+        ['Put state that should be shareable (search, filters, sort, page, active tab) into the URL and read it with <code>input()</code>.','Use <code>queryParamsHandling: \'merge\'</code> to change only what changes – and remove what equals the default with <code>null</code>.','Set <code>replaceUrl: true</code> while typing and debounce it (<code>debounce</code> or a timer), otherwise every letter lands in the history.','Use real links with <code>[queryParams]</code> for paging and sorting – then “open in new tab” and middle-click work.']),
+  dont:tx(['Den Input nicht in ein eigenes <code>signal()</code> kopieren und dort weiterpflegen – zwei Quellen laufen auseinander.','<code>queryParamsHandling</code> nicht vergessen: Ohne <code>merge</code> löscht „Seite 2“ Suche und Filter.','Keine Zahlen aus der URL ohne Umwandlung rechnen: Query-Parameter sind immer Strings – <code>\'1\' + 1</code> ist <code>\'11\'</code>.'],
+        ['Don’t copy the input into your own <code>signal()</code> and keep maintaining it there – two sources drift apart.','Don’t forget <code>queryParamsHandling</code>: without <code>merge</code>, “page 2” wipes search and filters.','Don’t do maths with URL values without converting: query params are always strings – <code>\'1\' + 1</code> is <code>\'11\'</code>.']),
+  why:tx('<p>Die URL ist der einzige Zustand, den der Browser von selbst speichert, teilt und zurückspult. Liegt der Filter dort, funktionieren Neuladen, Lesezeichen, „Link kopieren“ und der Zurück-Button ohne eigenen Code. Das Muster heißt <strong>URL als Single Source of Truth</strong>: Die Komponente liest nur (Inputs), schreibt nur über den Router, und der Router schließt den Kreis, indem er nach der Navigation die Inputs neu setzt.</p><p>Inputs sind dabei absichtlich nur lesbar – <code>InputSignal</code> hat kein <code>set()</code>. Würde die Komponente den Wert lokal ändern, wäre er nicht mehr in der URL, und beim nächsten Navigieren überschreibt der Router ihn ohnehin.</p>',
+           '<p>The URL is the only state the browser stores, shares and rewinds by itself. If the filter lives there, reload, bookmarks, “copy link” and the back button work without code of your own. The pattern is called <strong>URL as single source of truth</strong>: the component only reads (inputs), only writes through the router, and the router closes the loop by setting the inputs again after the navigation.</p><p>Inputs are read-only on purpose – <code>InputSignal</code> has no <code>set()</code>. If the component changed the value locally, it would no longer be in the URL, and the router would overwrite it on the next navigation anyway.</p>'),
+  test:{code:`it('writes the page back to the URL', async () => {
+  TestBed.configureTestingModule({
+    providers: [provideRouter(
+      [{ path: 'products', component: ProductList }],
+      withComponentInputBinding())],
+  });
+  const harness = await RouterTestingHarness.create();
+  const list = await harness.navigateByUrl('/products?q=tea', ProductList);
+  list.next();
+  await harness.fixture.whenStable();
+  expect(TestBed.inject(Router).url).toBe('/products?q=tea&page=2');
+  expect(list.page()).toBe(2);
+});`,note:tx('Der Test prüft beide Richtungen: <code>next()</code> schreibt in die URL, und der Router setzt danach den Input <code>page</code> neu.','The test checks both directions: <code>next()</code> writes to the URL, and the router then sets the <code>page</code> input again.')}
 });
 
 LESSONS.push({
@@ -8336,7 +8507,90 @@ listEl.addEventListener('click',e=>{if(e.target.closest('#q-reset')){search.valu
 /* ---------- Lektion ---------- */
 const view=$('#view'),master=$('#master'),detail=$('#hauptinhalt'),shell=$('#shell');
 let cleanup=[];
-const codeFig=(good,label,src)=>`<figure class="${good===null?'k-good k-neutral':good?'k-good':'k-bad'}"><figcaption>${good===null?ic('code'):ic(good?'ok':'xc')}${label}</figcaption><pre class="k-pre" tabindex="0" role="region" aria-label="${tx('Code-Beispiel','Code example')}: ${esc(label)}"><code>${esc(String(src).trim())}</code></pre></figure>`;
+/* ---------- Syntax-Highlighting im Stil von VS Code „Dark+“ ----------
+   Ein kleiner Tokenizer statt einer Bibliothek: TypeScript plus Angular-Templates (Tags, Attribute,
+   Bindings, @if/@for, {{ }}). Template-Strings mit HTML darin werden als Template gefärbt – wie es der
+   Angular Language Service im Editor tut. Kein vollständiger Parser, aber genau genug für kurze Beispiele. */
+const HL_CTL=new Set(['if','else','for','while','do','return','import','export','from','as','await','async','break','continue','switch','case','default','throw','try','catch','finally','yield','of','in']);
+const HL_KW=new Set(['const','let','var','function','class','interface','type','enum','extends','implements','new','this','super','true','false','null','undefined','readonly','private','public','protected','static','typeof','instanceof','void','keyof','declare','abstract','get','set','satisfies','is','never','any','unknown','string','number','boolean','object']);
+const hlSpan=(c,t)=>t?`<span class="hl-${c}">${esc(t)}</span>`:'';
+function hlTs(s){
+  let o='',i=0;const n=s.length;
+  const prevWord=()=>{const m=/([A-Za-z_$][\w$]*)\s*$/.exec(o.replace(/<[^>]+>/g,''));return m?m[1]:''};
+  while(i<n){
+    const c=s[i],r=s.slice(i);let m;
+    if(r.startsWith('//')){const e=s.indexOf('\n',i);const t=e<0?r:s.slice(i,e);o+=hlSpan('com',t);i+=t.length;continue}
+    if(r.startsWith('/*')){const e=s.indexOf('*/',i+2);const t=e<0?r:s.slice(i,e+2);o+=hlSpan('com',t);i+=t.length;continue}
+    if(c==='`'){
+      /* Template-String bis zum passenden Backtick, ${…} darin als Code */
+      let j=i+1,parts=[],buf='';
+      while(j<n&&s[j]!=='`'){
+        if(s[j]==='\\'){buf+=s[j]+(s[j+1]||'');j+=2;continue}
+        if(s[j]==='$'&&s[j+1]==='{'){let d=1,k=j+2;while(k<n&&d){if(s[k]==='{')d++;else if(s[k]==='}')d--;k++}parts.push(['s',buf],['x',s.slice(j+2,k-1)]);buf='';j=k;continue}
+        buf+=s[j++];
+      }
+      parts.push(['s',buf]);
+      const html=parts.some(([k,v])=>k==='s'&&/<[a-z][\w-]*[\s>]|@(if|for|switch|defer)\b|\{\{/.test(v));
+      o+=hlSpan('str','`')+parts.map(([k,v])=>k==='x'?hlSpan('pun','${')+hlTs(v)+hlSpan('pun','}'):html?hlHtml(v):hlSpan('str',v)).join('')+(j<n?hlSpan('str','`'):'');
+      i=j+1;continue;
+    }
+    if(c==='"'||c==="'"){let j=i+1;while(j<n&&s[j]!==c&&s[j]!=='\n'){if(s[j]==='\\')j++;j++}o+=hlSpan('str',s.slice(i,j+1));i=j+1;continue}
+    if((m=/^\d[\d_]*(\.\d+)?/.exec(r))&&!/[\w$]/.test(s[i-1]||'')){o+=hlSpan('num',m[0]);i+=m[0].length;continue}
+    if((m=/^@[A-Za-z]\w*/.exec(r))){o+=hlSpan('fn',m[0]);i+=m[0].length;continue}
+    if((m=/^[A-Za-z_$][\w$]*/.exec(r))){
+      const w=m[0],after=s.slice(i+w.length),dot=/\.\s*$/.test(s.slice(Math.max(0,i-2),i))||s[i-1]==='.';
+      const pw=prevWord();
+      let cls=HL_CTL.has(w)&&!dot?'ctl':HL_KW.has(w)&&!dot?'kw':/^\s*(<[\w<>,\s\[\]|'"]*>)?\s*\(/.test(after)&&!/^(class|interface|new)$/.test(pw)?'fn':/^[A-Z]/.test(w)?'type':/^\s*:/.test(after)&&!dot&&/[{,]\s*$/.test(s.slice(0,i).replace(/\/\/[^\n]*|\s+$/g,''))?'prop':'var';
+      if(/^(class|interface|type|enum|extends|implements|new)$/.test(pw)&&/^[A-Z]/.test(w))cls='type';
+      o+=hlSpan(cls,w);i+=w.length;continue;
+    }
+    if(/[{}()[\];,.<>=+\-*/%!&|?:]/.test(c)){o+=hlSpan('op',c);i++;continue}
+    o+=esc(c);i++;
+  }
+  return o;
+}
+function hlHtml(s){
+  let o='',i=0;const n=s.length;
+  while(i<n){
+    const r=s.slice(i);let m;
+    if(r.startsWith('<\!--')){const e=s.indexOf('-->',i);const t=e<0?r:s.slice(i,e+3);o+=hlSpan('com',t);i+=t.length;continue}
+    if(r.startsWith('{{')){const e=s.indexOf('}}',i);const t=e<0?r.slice(2):s.slice(i+2,e);o+=hlSpan('pun','{{')+hlTs(t)+(e<0?'':hlSpan('pun','}}'));i+=t.length+(e<0?2:4);continue}
+    if((m=/^@(if|else if|else|for|switch|case|default|empty|defer|placeholder|loading|error|let)\b/.exec(r))){
+      o+=hlSpan('ctl',m[0]);i+=m[0].length;
+      const sp=/^\s*/.exec(s.slice(i))[0];
+      if(s[i+sp.length]==='('){let d=0,k=i+sp.length;do{if(s[k]==='(')d++;else if(s[k]===')')d--;k++}while(k<n&&d);o+=esc(sp)+hlSpan('pun','(')+hlTs(s.slice(i+sp.length+1,k-1))+hlSpan('pun',')');i=k}
+      continue;
+    }
+    if((m=/^<\/?([A-Za-z][\w-]*)/.exec(r))){
+      o+=hlSpan('pun',m[0].startsWith('</')?'</':'<')+hlSpan('tag',m[1]);i+=m[0].length;
+      /* Attribute bis zum Ende des Tags */
+      while(i<n&&s[i]!=='>'){
+        const a=s.slice(i);let am;
+        if((am=/^\s+/.exec(a))){o+=esc(am[0]);i+=am[0].length;continue}
+        if(a.startsWith('/>')){o+=hlSpan('pun','/');i++;continue}
+        if((am=/^[^\s=>\/"']+/.exec(a))){
+          const name=am[0];o+=hlSpan('attr',name);i+=name.length;
+          if(s[i]==='='&&(s[i+1]==='"'||s[i+1]==="'")){
+            const q=s[i+1],e=s.indexOf(q,i+2),val=s.slice(i+2,e<0?n:e);
+            const bound=/^[\[(*]|^(bind|on)-/.test(name);
+            o+=hlSpan('pun','=')+hlSpan('str',q)+(bound?hlTs(val):hlSpan('str',val))+(e<0?'':hlSpan('str',q));
+            i=e<0?n:e+1;
+          }
+          continue;
+        }
+        o+=esc(s[i]);i++;
+      }
+      if(s[i]==='>'){o+=hlSpan('pun','>');i++}
+      continue;
+    }
+    if(s[i]==='}'){o+=hlSpan('pun','}');i++;continue}
+    const e=r.search(/<|\{\{|@[a-z]|\}/);const t=e<=0?r.slice(0,1):r.slice(0,e);o+=esc(t);i+=t.length;
+  }
+  return o;
+}
+/* HTML-Modus, wenn das Beispiel (nach Kommentaren) mit einem Tag oder einem @-Block beginnt */
+const highlight=src=>{const first=src.replace(/^(\s*(\/\/[^\n]*|<\!--[\s\S]*?-->)\s*\n)*/,'').trimStart();return /^(<[a-zA-Z!\/]|@(if|for|switch|defer|let)\b|\{\{)/.test(first)?hlHtml(src):hlTs(src)};
+const codeFig=(good,label,src)=>`<figure class="${good===null?'k-good k-neutral':good?'k-good':'k-bad'}"><figcaption>${good===null?ic('code'):ic(good?'ok':'xc')}${label}</figcaption><pre class="k-pre k-hl" tabindex="0" role="region" aria-label="${tx('Code-Beispiel','Code example')}: ${esc(label)}"><code>${highlight(String(src).trim())}</code></pre></figure>`;
 function lessonHTML(l){
   const i=LESSONS.indexOf(l),prev=LESSONS[i-1],next=LESSONS[i+1],c=chapterOf(l.cat),st=STATUS[l.status||'stable'];
   return `<article class="lesson" aria-labelledby="lesson-title">

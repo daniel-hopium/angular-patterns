@@ -1,7 +1,8 @@
 # Angular-Patterns – modernes Angular zum Anfassen
 
-77 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
-Dependency Injection, RxJS, Forms, Router, Zustand & Daten, robuste Apps und Performance.
+85 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
+Dependency Injection, RxJS, Forms, Router, Zustand & Daten, robuste Apps, Sicherheit und
+Performance.
 Jedes Muster hat eine Kernregel,
 eine Live-Simulation, „So nicht – so“-Code und Links auf die genaue Stelle der Angular-Doku.
 Auf Deutsch und Englisch.
@@ -26,6 +27,7 @@ Abhängigkeiten. Internet braucht es nur für die Google-Schriften.
 | Router | Routen, Inputs aus der Route, zurück in die URL schreiben, Deep Linking, Scroll Restoration, Lazy Loading, Guards, Resolver, Links, Titel |
 | Zustand & Daten | Discriminated Union statt Boolean-Flags, State Machine, Server- vs. Client-State und Normalisierung, Optimistic Update, Race Conditions, Stale-While-Revalidate, Optimistic Locking, Draft State, Pagination mit Cursor, Selektoren & Memoization |
 | Robuste Apps | Undo/Redo (Command Pattern), Autosave, Polling vs. Push, Persisted State mit Migrationen, Offline-Queue (Outbox), Facade & Events, Cross-Tab-Sync, Fehler-Ebenen, Feature Flags |
+| Sicherheit | XSS und Sanitizing, Trusted Types & CSP, Token-Speicherung, CSRF/XSRF, Refresh-Token-Flow, Guards sind keine Sicherheit, Open Redirect, Secrets im Bundle & Abhängigkeiten |
 | Performance & Architektur | OnPush, Zoneless, Container/Presentational, State-Service, Hydration, `NgOptimizedImage` |
 
 Jede Lektion ist gleich aufgebaut: Version und Status, Kernregel, „Auf einen Blick“ (APIs),
@@ -39,7 +41,7 @@ Die Beispiele laufen ohne Build: kleine Nachbauten in reinem JavaScript, die sic
 verhalten wie Angular und sichtbar machen, was sonst verborgen passiert – etwa wann ein
 `computed()` neu rechnet, welche Komponenten die Change Detection prüft, wie `switchMap`
 innere Requests abbricht oder in welcher Reihenfolge Guards und Resolver laufen. Die APIs
-und ihr Status sind gegen die Typdefinitionen von Angular 22.1 geprüft.
+und ihr Status sind gegen die Typdefinitionen von Angular 22.2 geprüft.
 
 - **`NG`**: Mini-Signals mit derselben Semantik (lazy `computed`, gebündelte `effect`s,
   Gleichheitsprüfung).

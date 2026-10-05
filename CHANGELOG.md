@@ -12,6 +12,11 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 ## Unveröffentlicht
 
 ### Neu
+- Kapitel „Sicherheit“ mit 8 Lektionen: XSS und Angulars Sanitizer (mit nachgebautem Sanitizer,
+  der nichts ausführt), Trusted Types & CSP, Token-Speicherung (HttpOnly-Cookie und BFF statt
+  `localStorage`), CSRF/XSRF-Schutz im `HttpClient`, Refresh-Token-Flow ohne Refresh-Sturm,
+  „Guards sind keine Sicherheit“, Open Redirect und URL-Validierung sowie Secrets im Bundle und
+  die Absicherung von Abhängigkeiten.
 - Zwei neue Kapitel mit 19 Lektionen zu Mustern, die man im Alltag braucht. **Zustand &
   Daten:** Discriminated Union statt Boolean-Flags, State Machine, Server- vs. Client-State
   mit Normalisierung, Optimistic Update mit Rollback, Race Conditions und Abbrechen,
@@ -49,6 +54,17 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
   `favicon.ico` für ältere Browser und ein Icon für den Homescreen (`apple-touch-icon.png`).
 
 ### Behoben
+- Faktenprüfung aller Lektionen gegen Angular 22.2 und die Quellen (Typdefinitionen, Quellcode,
+  RFCs, MDN), alle Links samt Anker geprüft. Korrigiert u. a.: `@switch` mit `@default never;`
+  braucht eine `@let`-Variable statt eines Signal-Aufrufs; fehlendes `pathMatch` meldet NG04014
+  statt einer Redirect-Schleife; Signal-Forms-`submit()` wartet nicht auf laufende
+  Async-Validatoren; Einheiten-Suffixe funktionieren nicht im `[style]`-Objekt; das
+  Scroll-Restoration-Beispiel hatte einen Effect ohne Abhängigkeit; `@defer` lädt sofort nach
+  dem Trigger; EventSource-Wiederverbindung, `keepalive`-Limit und Idempotency-Key präzisiert.
+- Die Router-Simulation startet die Guards einer Gruppe jetzt gleichzeitig und wertet in
+  Array-Reihenfolge aus – wie Angular; vorher liefen sie nacheinander.
+- Ein Fehler in einem `effect()` der Simulationen stoppt nicht mehr die übrigen Effects.
+- Die Startseite versprach bei jeder Lektion eine Versionsangabe; Muster-Lektionen haben keine.
 - Auswahlfelder mit langen Optionen (etwa „RedirectCommand (skipLocationChange)“ bei den
   Guards) ragten auf schmalen Handys über den Rand; der Text bricht jetzt um.
 

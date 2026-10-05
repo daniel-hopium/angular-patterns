@@ -30,3 +30,12 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
   (stabil, Developer Preview, experimentell) und Links auf die genaue Stelle der Angular-Doku.
 - Spickzettel mit allen APIs aus allen Lektionen, durchsuchbar; Lernfortschritt,
   zweisprachig, hell und dunkel, `Strg+K` für die Suche.
+
+### Verbessert
+- Neues App-Symbol im Stil der Schwester-App Daumenregel: dunkler Grund, blasse Linien und
+  ein goldener Akzent – alle fünf Apps sehen jetzt im Tab wie eine Familie aus. Dazu
+  `favicon.ico` für ältere Browser und ein Icon für den Homescreen (`apple-touch-icon.png`).
+
+### Intern
+- `tools/make_icons.py` erzeugt SVG, ICO und PNG aus einer einzigen Geometrie (braucht
+  Pillow).

@@ -12,6 +12,18 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 ## Unveröffentlicht
 
 ### Neu
+- Zwei neue Kapitel mit 19 Lektionen zu Mustern, die man im Alltag braucht. **Zustand &
+  Daten:** Discriminated Union statt Boolean-Flags, State Machine, Server- vs. Client-State
+  mit Normalisierung, Optimistic Update mit Rollback, Race Conditions und Abbrechen,
+  Stale-While-Revalidate, Optimistic Locking mit Konflikt-Dialog, Draft State mit
+  Dirty-Tracking, Offset- vs. Cursor-Pagination und Selektoren mit Memoization. **Robuste
+  Apps:** Undo/Redo mit Command Pattern, Autosave, Polling vs. Push mit Page Visibility,
+  Persisted State mit Migrationen, Offline-Queue (Outbox), Facade & Events, Cross-Tab-Sync,
+  Fehler-Ebenen und Feature Flags.
+- Router-Lektionen „Deep Linking“ (Dialog, Tab und Auswahl in der URL) und „Scroll
+  Restoration“ (`withInMemoryScrolling`, Anker, nachgeladene Listen).
+- Gemeinsamer Fake-Server mit Netzwerk-Leiste wie in den Devtools: Latenz, Fehler und Offline
+  lassen sich einstellen, jede Anfrage zeigt Status und Dauer.
 - Lektion „Zurück in die URL schreiben“: Query- und Pfad-Parameter mit `router.navigate()`
   ändern – `queryParamsHandling: 'merge'`, `null` zum Entfernen, `replaceUrl` beim Tippen –,
   mit einer Simulation samt Browser-Verlauf, Zurück-Button und Neuladen.
@@ -35,6 +47,10 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 - Neues App-Symbol im Stil der Schwester-App Daumenregel: dunkler Grund, blasse Linien und
   ein goldener Akzent – alle fünf Apps sehen jetzt im Tab wie eine Familie aus. Dazu
   `favicon.ico` für ältere Browser und ein Icon für den Homescreen (`apple-touch-icon.png`).
+
+### Behoben
+- Auswahlfelder mit langen Optionen (etwa „RedirectCommand (skipLocationChange)“ bei den
+  Guards) ragten auf schmalen Handys über den Rand; der Text bricht jetzt um.
 
 ### Intern
 - `tools/make_icons.py` erzeugt SVG, ICO und PNG aus einer einzigen Geometrie (braucht

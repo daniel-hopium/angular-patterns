@@ -1,7 +1,8 @@
 # Angular-Patterns – modernes Angular zum Anfassen
 
-56 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
-Dependency Injection, RxJS, Forms, Router und Performance. Jedes Muster hat eine Kernregel,
+77 Lektionen zu modernem Angular (Stand Angular 22): Signals, Komponenten, Control Flow,
+Dependency Injection, RxJS, Forms, Router, Zustand & Daten, robuste Apps und Performance.
+Jedes Muster hat eine Kernregel,
 eine Live-Simulation, „So nicht – so“-Code und Links auf die genaue Stelle der Angular-Doku.
 Auf Deutsch und Englisch.
 
@@ -22,7 +23,9 @@ Abhängigkeiten. Internet braucht es nur für die Google-Schriften.
 | Dependency Injection | `inject()`, `providedIn`/`@Service()`, `InjectionToken`, Component-Provider, Resolution Modifiers, `provideX()` |
 | RxJS & HTTP | Flattening-Operatoren, Typeahead, Abmelden, Interop mit Signals, Fehlerbehandlung, `shareReplay`, Interceptors |
 | Forms | Typed Forms, Validatoren, `FormArray`, Fehler anzeigen, `ControlValueAccessor`, Template-driven vs. Reactive, Signal Forms |
-| Router | Routen, Inputs aus der Route, zurück in die URL schreiben, Lazy Loading, Guards, Resolver, Links, Titel |
+| Router | Routen, Inputs aus der Route, zurück in die URL schreiben, Deep Linking, Scroll Restoration, Lazy Loading, Guards, Resolver, Links, Titel |
+| Zustand & Daten | Discriminated Union statt Boolean-Flags, State Machine, Server- vs. Client-State und Normalisierung, Optimistic Update, Race Conditions, Stale-While-Revalidate, Optimistic Locking, Draft State, Pagination mit Cursor, Selektoren & Memoization |
+| Robuste Apps | Undo/Redo (Command Pattern), Autosave, Polling vs. Push, Persisted State mit Migrationen, Offline-Queue (Outbox), Facade & Events, Cross-Tab-Sync, Fehler-Ebenen, Feature Flags |
 | Performance & Architektur | OnPush, Zoneless, Container/Presentational, State-Service, Hydration, `NgOptimizedImage` |
 
 Jede Lektion ist gleich aufgebaut: Version und Status, Kernregel, „Auf einen Blick“ (APIs),
@@ -42,6 +45,8 @@ und ihr Status sind gegen die Typdefinitionen von Angular 22.1 geprüft.
   Gleichheitsprüfung).
 - **`RX`**, **`NGDI`**, **`NGRT`**, **`TPL`**: kleine Modelle für RxJS mit Marble-Diagrammen,
   den Injector-Baum, den Router und Change Detection bzw. `@for`.
+- **`NET`**: ein Fake-Server mit einstellbarer Latenz, Fehlern und Offline-Schalter plus
+  einer Netzwerk-Leiste wie in den Devtools – jede Anfrage mit Status und Dauer.
 
 ## Bedienung
 

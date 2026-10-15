@@ -59,7 +59,7 @@ und ihr Status sind gegen die Typdefinitionen von Angular 22.2 geprüft.
 
 ## Die Schwester-Apps
 
-- [Daumenregel](https://daniel-hopium.github.io/pattern-library/) – UI-Regeln mit
+- [UI-Atlas](https://daniel-hopium.github.io/ui-atlas/) – UI-Regeln mit
   Live-Beispielen, WCAG-Kompass und Quiz
 - [CSS-Atlas](https://daniel-hopium.github.io/css-atlas/) – CSS-Eigenschaften mit
   Live-Vorschau

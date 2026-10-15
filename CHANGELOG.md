@@ -12,6 +12,8 @@ Kategorien: **Neu** (neue Funktionen), **Verbessert** (bestehendes Verhalten), *
 ## Unveröffentlicht
 
 ### Neu
+- Sonne/Mond-Knopf in der Kopfleiste: schaltet zwischen hellem und dunklem Design um. Die
+  Wahl bleibt gespeichert; ohne eigene Wahl gilt weiter die Systemeinstellung.
 - Kapitel „Sicherheit“ mit 8 Lektionen: XSS und Angulars Sanitizer (mit nachgebautem Sanitizer,
   der nichts ausführt), Trusted Types & CSP, Token-Speicherung (HttpOnly-Cookie und BFF statt
   `localStorage`), CSRF/XSRF-Schutz im `HttpClient`, Refresh-Token-Flow ohne Refresh-Sturm,
